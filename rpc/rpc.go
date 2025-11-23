@@ -1,4 +1,6 @@
 package rpc
+
+import "fmt"
 import "encoding/json"
 
 func EncodeMessage(msg any) string {
