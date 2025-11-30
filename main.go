@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 
@@ -14,7 +13,6 @@ import (
 func main() {
 	logger := getLogger("/Users/fapfor/personal/educationalsp/log.txt")
 	logger.Println("Hey, I started!")
-	fmt.Println("hi")
 
 	scanner := bufio.NewScanner(os.Stdin)
 	scanner.Split(rpc.Split)
@@ -41,6 +39,16 @@ func handleMessage(logger *log.Logger, method string, contents []byte) {
 
 		logger.Printf("Connected to: %s %s",
 			request.Params.Clientinfo.Name, request.Params.Clientinfo.Version)
+
+		msg := lsp.NewInitializeResponse(request.ID)
+		reply := rpc.EncodeMessage(msg)
+		writer := os.Stdout
+		_, err := writer.Write([]byte(reply))
+		if err != nil {
+			logger.Printf("Error sending reply: %s", err)
+		}
+
+		logger.Print("Sent the reply")
 	}
 }
 
